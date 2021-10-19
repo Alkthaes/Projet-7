@@ -8,6 +8,7 @@
 <script>
 import Nav from "./components/Nav.vue";
 
+
 export default {
   name: "App",
   components: {
@@ -19,8 +20,7 @@ export default {
 
 <style lang="scss">
 body {
-  background-color: #c2dfe3;
-  margin: 0px;
+  margin: 0;
 }
 
 #app {
@@ -28,5 +28,30 @@ body {
     Arial, Helvetica, Geneva, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  height: 100%;
+  width: 700px;
+}
+
+.flex {
+  display: flex;
+  &-col {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content {
+  justify-content: flex-start;
+
+  &-evenly {
+    justify-content: space-evenly;
+  }
 }
 </style>

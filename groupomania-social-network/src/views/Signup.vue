@@ -1,17 +1,27 @@
 <template>
-  <div id="login" class="flex-col align-items-center">
+  <div id="signup" class="flex-col align-items-center">
     <div class="container flex-col align-items-center">
-      <h1>Connexion</h1>
+      <h1>Inscription</h1>
 
       <p>
-        Pas encore de compte ?
-        <router-link class="pseudo_link" to="/signup">Créer un compte</router-link>
+        Déjà un compte ?
+        <router-link class="pseudo_link" to="/login">Se connecter</router-link>
       </p>
 
       <form @submit.prevent class="form_layout flex-col align-items-center" action="#">
 
         <div class="form-layout flex-col align-items-center">
-          <label for="email">Adresse email :</label>
+          <label for="lastname">Nom :</label>
+          <input type="text" name="lastname" id="lastname" v-model="lastname"/>
+        </div>
+
+        <div class="form-layout flex-col align-items-center">
+          <label for="firstname">Prénom :</label>
+          <input type="text" name="firstname" id="firstname" v-model="firstname"/>
+        </div>
+
+        <div class="form-layout flex-col align-items-center">
+          <label for="email">Adresse email<span>(professionnelle ou personnelle)</span>:</label>
           <input type="email" name="email" id="email" v-model="email"/>
         </div>
 
@@ -20,7 +30,7 @@
           <input type="password" name="password" id="password" v-model="password"/>
         </div>
 
-        <button @click="login" class="submit-btn">Se connecter</button>
+        <button class="submit-btn" type="submit" @click="createAccount">Inscription</button>
       </form>
     </div>
   </div>
@@ -29,29 +39,35 @@
 <script>
 
 export default {
-  name: "Login",
-  data: function () {
+  name: "Signup",
+  data: () => {
     return {
-      email: "",
-      password: "",
-    };
+      lastname: '',
+      firstname: '',
+      email: '',
+      password: '',
+      picture: '../assets/default-avatar.jpg',
+    }
   },
   methods: {
-    login: function () {
-      this.$store.dispatch('login', {
+    createAccount: function ()  {
+      this.$store.dispatch('createAccount', {
+        lastname: this.lastname,
+        firstname: this.firstname,
         email: this.email,
-        password: this.password
-          }
-      )
+        password: this.password,
+        picture: this.picture
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
 h1 {
   font-size: 40px;
 }
+
 
 form.form_layout {
   width: 700px;
@@ -118,5 +134,3 @@ input {
   cursor: pointer;
 }
 </style>
-
-
