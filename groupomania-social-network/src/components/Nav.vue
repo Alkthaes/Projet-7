@@ -7,16 +7,20 @@
     <div class="nav-link">
       <router-link to="/">Accueil</router-link>
     </div>
-    <div class="nav-link">
-      <router-link to="/about">About</router-link>
-    </div>
-    <div id="login-buttons">
+
+    <div v-if="!this.$store.state.isLoggedIn" id="login-buttons">
       <router-link to="/login" class="btn btn-login rounded"
         >Connexion</router-link
       >
       <router-link to="/signup" class="btn btn-signup rounded"
         >Inscription</router-link
       >
+    </div>
+
+    <div v-if="this.$store.state.isLoggedIn" >
+      <router-link to="/createpost">Créer un post</router-link>
+      <button @click="this.$store.commit('logOut')" class="btn btn-logout rounded">Déconnexion</button>
+      <router-link to="/profile">Mon compte</router-link>
     </div>
   </div>
 </template>
@@ -74,6 +78,13 @@ export default {
   &-signup {
     background-color: #0a89ff;
     color: white !important;
+  }
+
+  &-logout {
+    background-color: #bdbdbd;
+    color: #1f1f1f;
+    border: none;
+    cursor: pointer;
   }
 }
 
