@@ -8,7 +8,7 @@
         </div>
         <div>
           <p>Choisissez une image (formats : jpeg, png ou gif) :</p>
-          <UploadImages :max="1" @change="handleImages" />
+          <UploadImages :max="1" @change="handleImages" required />
           <button type="button" @click="onUpload">Valider</button>
         </div>
       </form>
@@ -28,29 +28,41 @@ export default {
   data: function() {
     return {
       selectedFile: null,
+      encodedFile: null,
       title: ''
     }
   },
   methods: {
-    handleImages(event) {
+    async handleImages(event) {
       this.selectedFile = event.target.files[0];
       console.log(this.selectedFile);
+      const reader = new FileReader();
+
+      let rawImg;
+      reader.onloadend = () => {
+        rawImg = reader.result;
+        console.log(rawImg);
+        this.encodedFile = rawImg;
+        console.log(this.encodedFile);
+      }
+      reader.readAsDataURL(this.selectedFile);
+
     },
     onUpload() {
-      const fd = new FormData();
-      fd.append('image', this.selectedFile, this.selectedFile.name);
+      let fd = new FormData();
       fd.append('title', this.title);
+      fd.append('image', this.encodedFile);
       fd.append('user_id', localStorage.getItem('user_id'));
-
-      console.log(fd);
 
       axios.post('http://127.0.0.1:8000/post/create', fd, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'content-type': 'multipart/form-data'
         }
       })
           .then(res => console.log(res))
           .catch(err => console.log(err));
+
+      this.$router.push({path: '/'});
 
     }
   }

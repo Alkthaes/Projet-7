@@ -1,10 +1,10 @@
 <template>
   <div class="home flex-col align-items-center">
-    <div class="container flex-col align-items-center">
-      <div class="card flex-col align-items-center">
-        <div class="card_title flex"><h2>First post</h2></div>
+    <ul class="container flex-col align-items-center">
+      <li v-for="post in posts" class="card flex-col align-items-center" :key="post.id">
+        <div class="card_title flex"><h2>{{ post.titre }}</h2></div>
         <div class="card_image">
-          <img src="../assets/icon-above-font.png" alt="" />
+          <img :src="post.image" alt="" />
         </div>
         <div
           class="card_interact flex align-items-center justify-content-evenly"
@@ -17,16 +17,27 @@
           </div>
           <div class="comments"><i class="fas fa-comment-alt"></i></div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import axios from 'axios';
 
 export default {
   name: "Home",
+  data() {
+    return {
+      posts: []
+    }
+  },
+  async created() {
+    const res = await axios.get('http://127.0.0.1:8000/post');
+    console.log(res.data)
+    this.posts = res.data;
+  }
 };
 </script>
 
