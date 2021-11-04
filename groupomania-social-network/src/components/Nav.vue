@@ -1,26 +1,34 @@
 <template>
-  <div id="nav" class="flex">
-    <img
-      src="../assets/icon-left-font-monochrome-black.png"
-      alt="logo groupomania"
-    />
-    <div class="nav-link">
-      <router-link to="/">Accueil</router-link>
+  <div id="nav" class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+    <a href="#" class="navbar-brand ms-3">
+      <img
+          src="../assets/icon-left-font-monochrome-black.png"
+          alt="logo groupomania" width="200"
+      />
+    </a>
+
+    <div>
+      <router-link to="/" class="nav-link text-dark fs-4 fw-bold">Accueil</router-link>
     </div>
 
     <div v-if="!this.$store.state.isLoggedIn" id="login-buttons">
-      <router-link to="/login" class="btn btn-login rounded"
+      <router-link to="/login" class="btn btn-secondary rounded-pill mx-3"
         >Connexion</router-link
       >
-      <router-link to="/signup" class="btn btn-signup rounded"
+      <router-link to="/signup" class="btn btn-primary rounded-pill mx-3"
         >Inscription</router-link
       >
     </div>
 
     <div v-if="this.$store.state.isLoggedIn" >
-      <router-link to="/createpost">Créer un post</router-link>
-      <button @click="this.$store.commit('logOut')" class="btn btn-logout rounded">Déconnexion</button>
-      <router-link to="/profile">Mon compte</router-link>
+      <router-link class="btn btn-outline-primary rounded-pill mx-3" to="/createpost">
+        <i class="fas fa-plus"></i>
+        Créer un post
+      </router-link>
+
+      <button @click="this.$store.commit('logOut')" class="btn btn-secondary rounded-pill mx-3">Déconnexion</button>
+
+      <router-link to="/profile" class="btn btn-primary rounded-pill mx-3">Mon compte</router-link>
     </div>
   </div>
 </template>
@@ -31,64 +39,3 @@ export default {
 };
 </script>
 
-<style lang="scss">
-#nav {
-  padding: 15px;
-  border-bottom: 1px solid #1f1f1f;
-  justify-content: space-evenly;
-  align-items: baseline;
-
-  & img {
-    width: 150px;
-    height: 30px;
-    position: relative;
-    right: 100px;
-    top: 5px;
-  }
-}
-
-.nav-link {
-  a {
-    font-weight: bold;
-    font-size: 18px;
-    color: #1f1f1f;
-    text-decoration: none;
-  }
-}
-
-#login-buttons {
-  position: relative;
-  left: 150px;
-}
-
-.btn {
-  display: inline-block;
-  height: 36px;
-  line-height: 36px;
-  font-weight: 700;
-  padding: 0 16px;
-  margin: 0 10px;
-  text-decoration: none;
-
-  &-login {
-    background-color: #bdbdbd;
-    color: #1f1f1f;
-  }
-
-  &-signup {
-    background-color: #0a89ff;
-    color: white !important;
-  }
-
-  &-logout {
-    background-color: #bdbdbd;
-    color: #1f1f1f;
-    border: none;
-    cursor: pointer;
-  }
-}
-
-.rounded {
-  border-radius: 20px;
-}
-</style>

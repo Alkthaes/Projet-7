@@ -1,22 +1,35 @@
 <template>
-  <div class="home flex-col align-items-center">
-    <ul class="container flex-col align-items-center">
-      <li v-for="post in posts" class="card flex-col align-items-center" :key="post.id">
-        <div class="card_title flex"><h2>{{ post.titre }}</h2></div>
-        <div class="card_image">
-          <img :src="post.image" alt="" />
+  <div id="Home" class="container d-flex justify-content-center">
+    <ul class="p-0 mt-5">
+      <li v-for="post in posts" class="card mb-5" style="max-width: 900px" :key="post.id">
+        <div class="card-header d-flex justify-content-between">
+          <h2 class="fs-2">{{ post.titre }}</h2>
+          <p>posté par:
+            <img class="rounded-circle" :src="post.user.picture" alt="" width="30">
+            {{ post.user.firstname }}</p>
         </div>
-        <div
-          class="card_interact flex align-items-center justify-content-evenly"
-        >
-          <div class="likes flex justify-content-evenly">
-            <div class="likes_plus">
-              <i class="fas fa-thumbs-up"></i>
-            </div>
-            <div class="likes_minus"><i class="fas fa-thumbs-down"></i></div>
+
+        <img :src="post.image" alt="" class="card-img-top"/>
+
+        <div class="card-footer d-flex justify-content-around">
+          <div class="d-flex">
+            <button type="button" class="btn btn-outline-secondary rounded mx-3">
+            <i class="fas fa-chevron-up"></i>
+            </button>
+
+            <button type="button" class="btn btn-outline-secondary rounded mx-3">
+            <i class="fas fa-chevron-down"></i>
+            </button>
           </div>
-          <div class="comments"><i class="fas fa-comment-alt"></i></div>
+
+
+            <a :href="staticUrl + post.id" class="btn btn-outline-secondary rounded">
+            <i class="fas fa-comment-alt"></i>
+              <span class="ms-2 fw-bold fs-5">{{ post.comments.length }}</span>
+            </a>
+
         </div>
+
       </li>
     </ul>
   </div>
@@ -30,65 +43,21 @@ export default {
   name: "Home",
   data() {
     return {
-      posts: []
+      posts: [],
+      staticUrl: '/post/'
     }
   },
   async created() {
     const res = await axios.get('http://127.0.0.1:8000/post');
     console.log(res.data)
     this.posts = res.data;
+  },
+  methods: {
+    goToPage: function() {
+      this.$router.push({ name: 'post', params: { id: this.post.id} })
+    }
   }
 };
 </script>
 
-<style scoped lang="scss">
 
-.card {
-  width: 90%;
-  border-bottom: 1px solid #bdbdbd;
-
-  &_image {
-    width: 500px;
-    height: 500px;
-    padding: 0 70px;
-    background-color: #bdbdbd;
-
-    img {
-      width: 100%;
-      height: auto;
-    }
-  }
-
-  &_title {
-    width: 100%;
-  }
-
-  &_interact {
-    height: 50px;
-    width: 100%;
-    color: #bdbdbd;
-  }
-
-  .fas {
-    border: 1px solid #bdbdbd;
-    border-radius: 5px;
-    font-size: 20px;
-    width: 30px;
-    height: 25px;
-    line-height: 25px;
-    text-align: center;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-
-  .likes {
-    width: 200px;
-    position: relative;
-    right: 50px;
-  }
-
-  .comments {
-    position: relative;
-  }
-}
-</style>
