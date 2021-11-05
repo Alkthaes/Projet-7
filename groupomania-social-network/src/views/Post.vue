@@ -1,7 +1,7 @@
 <template>
-  <div id="post" class="container">
+  <div id="post" class="container mt-5 d-flex justify-content-center">
 
-    <div class="card">
+    <div class="card" style="max-width: 900px">
       <div class="card-header d-flex justify-content-between">
         <h1 class="fs-2">{{ post.titre }}</h1>
         <p>Posté par: {{ post.user.firstname }}</p>
@@ -32,7 +32,7 @@
         <div class="card-body">
           <h2 class="fs-5">Ajouter un commentaire</h2>
           <div class="d-flex justify-content-center">
-            <textarea v-model="comment" name="comment-space" id="comment-space" cols="85" rows="5"></textarea>
+            <textarea v-model="comment" name="comment-space" id="comment-space" cols="85" rows="5" autofocus></textarea>
           </div>
           <div class="d-flex justify-content-end">
             <button class="btn btn-primary rounded mt-1" @click="sendComment">Envoyer</button>
