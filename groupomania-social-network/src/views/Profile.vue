@@ -33,12 +33,12 @@
 
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            <a href="" class="nav-link text-dark fw-bold">Mes posts</a>
+            <a href="/" class="nav-link text-dark fw-bold">Mes posts</a>
           </li>
         </ul>
 
       </div>
-      <div class="col-8 container">
+      <div class="col-8">
         <div class="card w-100 d-inline-block">
           <div class="card-title">
             <h1 class="fw-bold fs-4 m-3">Informations personnelles</h1>

@@ -1,16 +1,15 @@
 <template>
-  <div id="Home" class="container d-flex justify-content-center">
+  <div id="user-posts" class="container">
     <PostsDisplay />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import axios from 'axios';
 import PostsDisplay from "@/components/PostsDisplay";
+import axios from "axios";
 
 export default {
-  name: "Home",
+  name: "UserPosts",
   components: {PostsDisplay},
   data() {
     return {
@@ -20,10 +19,8 @@ export default {
   },
   async created() {
     const res = await axios.get('http://127.0.0.1:8000/post');
-    console.log(res.data);
     this.posts = res.data;
   }
-};
+}
 </script>
-
 

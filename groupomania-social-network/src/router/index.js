@@ -5,6 +5,7 @@ import Profile from '../views/Profile.vue'
 import Signup from '@/views/Signup'
 import CreatePost from '@/views/CreatePost'
 import Post from '@/views/Post'
+import UserPosts from "@/views/UserPosts";
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/post/:id',
     name: 'post',
     component: Post
+  },
+  {
+    path: '/post/user/:id',
+    name: 'userposts',
+    component: UserPosts
   }
 ]
 
