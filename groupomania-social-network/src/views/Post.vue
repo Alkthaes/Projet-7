@@ -11,7 +11,7 @@
 
       <div class="card-footer d-flex justify-content-around">
         <div class="d-flex">
-          <button type="button" class="btn btn-outline-secondary rounded mx-3">
+          <button type="button" class="btn btn-outline-secondary rounded mx-3" @click="upvote">
             <i class="fas fa-chevron-up"></i>
           </button>
 
@@ -62,7 +62,9 @@ export default {
     return {
       post: {},
       comments: [],
-      comment: ''
+      comment: '',
+      upvoted: false,
+      downvoted: false
     }
   },
   async created() {
@@ -86,6 +88,9 @@ export default {
           .catch(err => console.log(err));
 
       this.$router.go();
+    },
+    upvote() {
+      this.upvoted = true;
     }
   }
 }

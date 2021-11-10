@@ -40,11 +40,6 @@ export default {
     posts: Array,
     staticUrl: String
   },
-  methods: {
-    goToPage: function() {
-      this.$router.push({ name: 'post', params: { id: this.post.id} })
-    }
-  }
 }
 </script>
 

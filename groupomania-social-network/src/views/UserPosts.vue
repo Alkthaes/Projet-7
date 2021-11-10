@@ -18,7 +18,7 @@ export default {
     }
   },
   async created() {
-    const res = await axios.get('http://127.0.0.1:8000/post');
+    const res = await axios.get('http://127.0.0.1:8000/post/user/' + this.$route.params.id);
     this.posts = res.data;
   }
 }
