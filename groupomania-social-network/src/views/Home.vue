@@ -1,7 +1,5 @@
 <template>
-  <div id="Home" class="container d-flex justify-content-center">
-    <PostsDisplay />
-  </div>
+  <PostsDisplay :posts="posts" :static-url="staticUrl" />
 </template>
 
 <script>
@@ -15,14 +13,17 @@ export default {
   data() {
     return {
       posts: [],
-      staticUrl: '/post/',
+      staticUrl: '/post/'
     }
   },
   async created() {
     const res = await axios.get('http://127.0.0.1:8000/post');
     console.log(res.data);
     this.posts = res.data;
-  }
+  },
+  mounted() {
+
+  },
 };
 </script>
 

@@ -33,7 +33,7 @@
 
         <ul class="list-group list-group-flush text-center">
           <li class="list-group-item">
-            <a href="/" class="nav-link text-dark fw-bold">Mes posts</a>
+            <a :href="'/post/user/' + id" class="nav-link text-dark fw-bold">Mes posts</a>
           </li>
           <li class="list-group-item">
             <div class="nav-link text-dark fw-bold" style="cursor: pointer" @click="switchToEdit">Modifier les
@@ -156,6 +156,7 @@ export default {
       selectedFile: null,
       encodedFile: null,
       editMode: false,
+      id: localStorage.getItem('user_id'),
       firstname: '',
       lastname: '',
       email: '',
@@ -223,7 +224,7 @@ export default {
     },
     async submitChanges() {
       await axios.put('http://127.0.0.1:8000/user/update/infos', {
-        'user_id': this.userInfo.id,
+        'id': this.id,
         'lastname': this.lastname,
         'firstname': this.firstname,
         'email': this.email,

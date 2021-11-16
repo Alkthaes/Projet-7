@@ -4,22 +4,15 @@
     <div class="card" style="max-width: 900px">
       <div class="card-header d-flex justify-content-between">
         <h1 class="fs-2">{{ post.titre }}</h1>
-        <p>Posté par: {{ post.user.firstname }}</p>
+        <p>posté par:
+          <img class="rounded-circle mx-1" :src="post.user.picture" alt="" width="30">
+          <a :href="'/post/user/' + post.user.id" class="text-decoration-none fw-bold">{{ post.user.firstname }}</a>
+        </p>
       </div>
 
-      <img :src="post.image" alt="" class="card-image-top">
+      <img :src="post.image" alt="">
 
       <div class="card-footer d-flex justify-content-around">
-        <div class="d-flex">
-          <button type="button" class="btn btn-outline-secondary rounded mx-3" @click="upvote">
-            <i class="fas fa-chevron-up"></i>
-          </button>
-
-          <button type="button" class="btn btn-outline-secondary rounded mx-3">
-            <i class="fas fa-chevron-down"></i>
-          </button>
-        </div>
-
 
         <div class="btn btn-outline-secondary rounded">
           <i class="fas fa-comment-alt"></i>
@@ -63,15 +56,13 @@ export default {
       post: {},
       comments: [],
       comment: '',
-      upvoted: false,
-      downvoted: false
     }
   },
   async created() {
 
     const resPost = await axios.get(`http://127.0.0.1:8000/post/${this.$route.params.id}`);
     console.log(resPost.data);
-    const resComment = await axios.get('http://127.0.0.1:8000/comment');
+    const resComment = await axios.get(`http://127.0.0.1:8000/comment/post/${this.$route.params.id}`);
     console.log(resComment.data);
 
     this.comments = resComment.data;
@@ -89,9 +80,6 @@ export default {
 
       this.$router.go();
     },
-    upvote() {
-      this.upvoted = true;
-    }
   }
 }
 

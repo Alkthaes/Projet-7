@@ -1,7 +1,5 @@
 <template>
-  <div id="user-posts" class="container">
-    <PostsDisplay />
-  </div>
+    <PostsDisplay :posts="posts" :static-url="staticUrl" />
 </template>
 
 <script>

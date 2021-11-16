@@ -6,17 +6,8 @@ axios.defaults.baseURL = 'http://127.0.0.1:8000';
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
 const store = createStore({
-    state: {
-        isLoggedIn: false
-    },
-    mutations: {
-        logIn: function (state) {
-            state.isLoggedIn = true
-        },
-        logOut: function (state) {
-            state.isLoggedIn = false
-        },
-    },
+    state: {},
+    mutations: {},
     actions: {
         createAccount: ({commit}, userInfos) => {
             console.log(commit);
@@ -34,7 +25,6 @@ const store = createStore({
                     console.log(res);
                     localStorage.setItem('token', res.data.token);
                     localStorage.setItem('user_id', res.data.user.id);
-                    store.commit('logIn');
                     router.push({path: '/'});
                 })
                 .catch(err => console.log(err));
@@ -42,9 +32,17 @@ const store = createStore({
 
         },
         logout: function () {
-            localStorage.clear();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user_id');
             store.commit('logOut');
             router.push({path: '/'});
+        },
+        async upvote({commit}, vote) {
+            console.log(commit);
+
+            await axios.post('/vote/post/up', vote)
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
         }
     },
     modules: {}

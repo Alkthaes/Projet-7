@@ -1,15 +1,17 @@
 <template>
-  <div id="create-post" class="flex-col align-items-center">
-    <div class="container flex-col align-items-center">
+  <div id="create-post" class="flex-col align-items-center container" style="max-width: 800px">
+    <div class="flex-col align-items-center mt-5">
       <form @submit.prevent action="">
-        <div>
-          <label for="title">Entrez un titre :</label>
+        <div class="w-100">
+          <label for="title" class="me-3">Entrez un titre : </label>
           <input v-model="title" id="title" name="title" type="text" />
         </div>
-        <div>
+        <div class="mt-3">
           <p>Choisissez une image (formats : jpeg, png ou gif) :</p>
-          <UploadImages :max="1" @change="handleImages" required />
-          <button type="button" @click="onUpload">Valider</button>
+          <UploadImages :max="1" @change="handleImages" style="max-width: 600px" class="my-3" required />
+          <div class="d-flex justify-content-end ms-5" style="max-width: 600px">
+          <button class="btn btn-primary btn-lg px-3" type="button" @click="onUpload">Valider</button>
+          </div>
         </div>
       </form>
     </div>
@@ -68,7 +70,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-</style>
