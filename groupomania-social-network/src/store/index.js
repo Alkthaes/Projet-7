@@ -34,7 +34,6 @@ const store = createStore({
         logout: function () {
             localStorage.removeItem('token');
             localStorage.removeItem('user_id');
-            store.commit('logOut');
             router.push({path: '/'});
         },
         async upvote({commit}, vote) {

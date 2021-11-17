@@ -1,7 +1,7 @@
 <template>
   <div id="post" class="container mt-5 d-flex justify-content-center">
 
-    <div class="card" style="max-width: 900px">
+    <div class="card" style="max-width: 800px">
       <div class="card-header d-flex justify-content-between">
         <h1 class="fs-2">{{ post.titre }}</h1>
         <p>posté par:
@@ -12,7 +12,7 @@
 
       <img :src="post.image" alt="">
 
-      <div class="card-footer d-flex justify-content-around">
+      <div class="card-footer d-flex justify-content-end">
 
         <div class="btn btn-outline-secondary rounded">
           <i class="fas fa-comment-alt"></i>
