@@ -17,7 +17,7 @@
           </router-link>
 
 
-        <div v-if="this.token != ''">
+        <div v-if="this.$store.state.isLoggedIn = true">
           <router-link class="btn btn-outline-primary rounded-pill mx-3" to="/createpost">
             <i class="fas fa-plus"></i>
             Créer un post

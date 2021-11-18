@@ -37,8 +37,13 @@
               <a :href="'/post/user/' + id" class="nav-link text-dark fw-bold">Mes posts</a>
             </li>
             <li class="list-group-item">
-              <div class="nav-link text-dark fw-bold" style="cursor: pointer" @click="switchToEdit">Modifier les
-                informations
+              <div class="nav-link text-dark fw-bold" style="cursor: pointer" @click="switchToEdit">
+                Modifier les informations
+              </div>
+            </li>
+            <li class="group-item">
+              <div class="nav-link text-dark fw-bold" style="cursor: pointer">
+                Supprimer le compte
               </div>
             </li>
           </ul>
