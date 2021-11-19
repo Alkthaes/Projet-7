@@ -17,7 +17,7 @@
           </router-link>
 
 
-        <div v-if="this.$store.state.isLoggedIn = true">
+        <div v-if="this.$store.state.isLoggedIn == true">
           <router-link class="btn btn-outline-primary rounded-pill mx-3" to="/createpost">
             <i class="fas fa-plus"></i>
             Créer un post
@@ -46,14 +46,11 @@
 <script>
 export default {
   name: "Nav",
-  data() {
-    return {
-      token: ''
-    }
-  },
   mounted() {
     if (localStorage.token) {
-      this.token = localStorage.token
+      this.$store.commit('loggedIn')
+    } else {
+      this.$store.commit('loggedOut')
     }
   }
 };

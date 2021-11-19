@@ -6,6 +6,7 @@ import Signup from '@/views/Signup'
 import CreatePost from '@/views/CreatePost'
 import Post from '@/views/Post'
 import UserPosts from "@/views/UserPosts";
+import EditPost from "@/views/EditPost";
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
     path: '/createpost',
     name: 'createpost',
     component: CreatePost
+  },
+  {
+    path: '/edit/post/:id',
+    name: 'editpost',
+    component: EditPost
   },
   {
     path: '/post/:id',

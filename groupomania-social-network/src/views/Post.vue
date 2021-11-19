@@ -14,6 +14,19 @@
 
       <div class="card-footer d-flex justify-content-end">
 
+        <!-- Dropdown menu -->
+        <div v-if="(post.user.id == user_id ) || role" class="dropdown d-inline-block mx-5">
+          <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+            Options
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item btn" :href="'/edit/post/' + post.id">Editer</a></li>
+            <li><p class="dropdown-item btn" @click="this.$store.dispatch('deletePost', post.id)">Supprimer</p></li>
+
+          </ul>
+        </div>
+
         <div class="btn btn-outline-secondary rounded">
           <i class="fas fa-comment-alt"></i>
           <span class="ms-2 fw-bold fs-5">{{ comments.length }}</span>
@@ -28,6 +41,7 @@
             <textarea v-model="comment" name="comment-space" id="comment-space" cols="85" rows="5" autofocus></textarea>
           </div>
           <div class="d-flex justify-content-end">
+
             <button class="btn btn-primary rounded mt-1" @click="sendComment">Envoyer</button>
           </div>
         </div>
@@ -37,7 +51,22 @@
         <ul class="list-group list-group-flush">
           <li v-for="comment in comments" class="list-group-item" :key="comment.id">
             <p>{{ comment.content }}</p>
-            <p class="fst-italic">{{ comment.user.firstname }}</p>
+            <hr>
+            <div class="d-flex justify-content-between">
+              <p class="fst-italic">{{ comment.user.firstname }}</p>
+
+              <!-- Dropdown menu -->
+              <div v-if="(post.user.id == user_id ) || role" class="dropdown d-inline-block mx-5">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton2"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                  Options
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                  <li><p class="dropdown-item btn" @click="this.$store.dispatch('deleteComment', comment.id)">Supprimer</p></li>
+
+                </ul>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
@@ -56,9 +85,15 @@ export default {
       post: {},
       comments: [],
       comment: '',
+      user_id: localStorage.user_id,
+      role: null
     }
   },
   async created() {
+
+    if (localStorage.role) {
+      this.role = localStorage.role;
+    }
 
     const resPost = await axios.get(`http://127.0.0.1:8000/post/${this.$route.params.id}`);
     console.log(resPost.data);

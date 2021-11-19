@@ -8,7 +8,7 @@
           <img class="border rounded-circle mt-3" v-bind:src="userInfo.picture" style="max-width: 150px"
                alt="photo de profile utilisateur">
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#avatarModal">
+          <button type="button" class="btn btn-outline-primary my-3" data-bs-toggle="modal" data-bs-target="#avatarModal">
             Modifier l'avatar
           </button>
 
@@ -41,15 +41,36 @@
                 Modifier les informations
               </div>
             </li>
-            <li class="group-item">
-              <div class="nav-link text-dark fw-bold" style="cursor: pointer">
+            <li class="list-group-item">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                 Supprimer le compte
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModalLabel">Suppression du compte</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Souhaitez-vous vraiment supprimer votre compte ?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                      <button type="button" class="btn btn-primary" @click="deleteAccount">Confirmer</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </li>
           </ul>
         </div>
 
       </div>
+      <!-- User infos -->
       <div class="col-sm-12 col-lg-8 order-lg-last order-sm-1" v-if="editMode==false">
 
         <div class="card w-100 d-inline-block">
@@ -243,6 +264,9 @@ export default {
           .catch(err => console.log(err));
 
       this.$router.go();
+    },
+    deleteAccount() {
+      this.$store.dispatch('deleteAccount', this.userInfo.id);
     }
   }
 };
