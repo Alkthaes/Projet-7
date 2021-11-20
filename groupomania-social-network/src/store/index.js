@@ -44,7 +44,7 @@ const store = createStore({
         },
         logout: function ({commit}) {
             if (localStorage.role) {
-                localStorage.remove('role');
+                localStorage.removeItem('role');
             }
             localStorage.removeItem('token');
             localStorage.removeItem('user_id');
