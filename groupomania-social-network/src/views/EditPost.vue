@@ -21,7 +21,7 @@
           <button class="btn btn-primary" @click="editTitle">Enregistrer</button>
 
           <p>posté par:
-            <img class="rounded-circle mx-1" :src="post.User.picture" alt="" width="30">
+            <img class="rounded-circle mx-1" :src="post.User.picture" alt="" width="30" height="30">
             <a :href="'/post/user/' + post.User.id" class="text-decoration-none fw-bold">{{ post.User.firstname }}</a>
           </p>
         </div>
