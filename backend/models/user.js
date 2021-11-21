@@ -12,9 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Post, {
-        onDelete: "cascade"
+        foreignKey: 'UserId',
+        onDelete: 'cascade'
+
       });
       User.hasMany(models.Comment, {
+        foreignKey: 'UserId',
         onDelete: "cascade"
       });
     }
@@ -35,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     picture: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      default: '../assets/default-avatar.jpg'
     },
     password: {
       type: DataTypes.STRING,
@@ -46,6 +50,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     fonction: {
       type: DataTypes.STRING
+    },
+    roles: {
+      type: DataTypes.JSON,
+      allowNull: false
     }
   }, {
     sequelize,

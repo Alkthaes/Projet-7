@@ -4,10 +4,10 @@
 
       <li v-for="post in posts" class="card mb-5 w-100" style="max-width: 800px" :key="post.id">
         <div class="card-header d-flex justify-content-between">
-          <h2 class="fs-2">{{ post.titre }}</h2>
+          <h2 class="fs-2">{{ post.title }}</h2>
           <div><span class="fst-italic">posté par :</span>
-            <img class="rounded-circle mx-1" :src="post.user.picture" alt="" width="30">
-            <a :href="'/post/user/' + post.user.id" class="text-decoration-none fw-bold">{{ post.user.firstname }}</a>
+            <img class="rounded-circle mx-1" :src="post.User.picture" alt="" width="30" height="30">
+            <a :href="'/post/user/' + post.User.id" class="text-decoration-none fw-bold">{{ post.User.firstname }}</a>
           </div>
 
         </div>
@@ -17,7 +17,7 @@
         <div class="card-footer d-flex justify-content-end">
 
           <!-- Dropdown menu -->
-          <div v-if="(post.user.id == user_id ) || role" class="dropdown d-inline-block mx-5" >
+          <div v-if="(post.User.id == user_id ) || role" class="dropdown d-inline-block mx-5" >
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
               Options
             </button>
@@ -30,7 +30,7 @@
 
           <a :href="staticUrl + post.id" class="btn btn-outline-secondary rounded">
             <i class="fas fa-comment-alt"></i>
-            <span class="ms-2 fw-bold fs-5">{{ post.comments.length }}</span>
+            <span class="ms-2 fw-bold fs-5">{{ post.Comments.length }}</span>
           </a>
 
         </div>
@@ -41,6 +41,10 @@
 </template>
 
 <script>
+import axios from "axios";
+axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
 export default {
   name: 'PostsDisplay',
   props: {

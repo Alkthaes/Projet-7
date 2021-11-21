@@ -48,7 +48,7 @@ export default {
       firstname: '',
       email: '',
       password: '',
-      picture: '../assets/default-avatar.jpg',
+      picture: '',
     }
   },
   methods: {

@@ -3,10 +3,10 @@
 
     <div class="card" style="max-width: 800px">
       <div class="card-header d-flex justify-content-between">
-        <h1 class="fs-2">{{ post.titre }}</h1>
+        <h1 class="fs-2">{{ post.title }}</h1>
         <p>posté par:
-          <img class="rounded-circle mx-1" :src="post.user.picture" alt="" width="30">
-          <a :href="'/post/user/' + post.user.id" class="text-decoration-none fw-bold">{{ post.user.firstname }}</a>
+          <img class="rounded-circle mx-1" :src="post.User.picture" alt="" width="30" height="30">
+          <a :href="'/post/user/' + post.User.id" class="text-decoration-none fw-bold">{{ post.User.firstname }}</a>
         </p>
       </div>
 
@@ -15,7 +15,7 @@
       <div class="card-footer d-flex justify-content-end">
 
         <!-- Dropdown menu -->
-        <div v-if="(post.user.id == user_id ) || role" class="dropdown d-inline-block mx-5">
+        <div v-if="(post.User.id == user_id ) || role" class="dropdown d-inline-block mx-5">
           <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1"
                   data-bs-toggle="dropdown" aria-expanded="false">
             Options
@@ -29,7 +29,7 @@
 
         <div class="btn btn-outline-secondary rounded">
           <i class="fas fa-comment-alt"></i>
-          <span class="ms-2 fw-bold fs-5">{{ comments.length }}</span>
+          <span class="ms-2 fw-bold fs-5">{{ post.Comments.length }}</span>
         </div>
 
       </div>
@@ -53,10 +53,10 @@
             <p>{{ comment.content }}</p>
             <hr>
             <div class="d-flex justify-content-between">
-              <p class="fst-italic">{{ comment.user.firstname }}</p>
+              <p class="fst-italic">{{ comment.User.firstname }}</p>
 
               <!-- Dropdown menu -->
-              <div v-if="(post.user.id == user_id ) || role" class="dropdown d-inline-block mx-5">
+              <div v-if="(comment.User.id == user_id ) || role" class="dropdown d-inline-block mx-5">
                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton2"
                         data-bs-toggle="dropdown" aria-expanded="false">
                   Options
@@ -77,14 +77,16 @@
 
 <script>
 import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
 export default {
   name: 'post',
   data() {
     return {
-      post: {},
-      comments: [],
+      post: null,
       comment: '',
+      comments: null,
       user_id: localStorage.user_id,
       role: null
     }
@@ -95,17 +97,18 @@ export default {
       this.role = localStorage.role;
     }
 
-    const resPost = await axios.get(`http://127.0.0.1:8000/post/${this.$route.params.id}`);
-    console.log(resPost.data);
-    const resComment = await axios.get(`http://127.0.0.1:8000/comment/post/${this.$route.params.id}`);
-    console.log(resComment.data);
+    const res = await axios.get(`/post/${this.$route.params.id}`);
+    const resComment = await axios.get('/comments/post/' + this.$route.params.id);
 
-    this.comments = resComment.data;
-    this.post = resPost.data;
+    this.comments = resComment.data.comments;
+    this.post = res.data.post;
+
+    console.log(this.post);
+    console.log(resComment.data);
   },
   methods: {
     sendComment() {
-      axios.post('http://127.0.0.1:8000/comment/create', {
+      axios.post('/comment/create', {
         'content': this.comment,
         'post_id': this.$route.params.id,
         'user_id': localStorage.getItem('user_id')
@@ -113,7 +116,7 @@ export default {
           .then(res => console.log(res))
           .catch(err => console.log(err));
 
-      this.$router.go();
+      location.reload();
     },
   }
 }

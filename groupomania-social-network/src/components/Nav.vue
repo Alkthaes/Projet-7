@@ -1,7 +1,7 @@
 <template>
   <div id="nav" class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a href="/" class="navbar-brand ms-3">
+      <a href="/allposts" class="navbar-brand ms-3">
         <img
             src="../assets/icon-left-font-monochrome-black.png"
             alt="logo groupomania" width="200"
@@ -13,7 +13,7 @@
       </button>
       <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
 
-          <router-link to="/" class="nav-link text-dark fs-4 fw-bold">Accueil
+          <router-link to="/allposts" class="nav-link text-dark fs-4 fw-bold">Accueil
           </router-link>
 
 

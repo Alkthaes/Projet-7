@@ -5,6 +5,8 @@
 <script>
 import PostsDisplay from "@/components/PostsDisplay";
 import axios from "axios";
+axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
 export default {
   name: "UserPosts",
@@ -16,8 +18,8 @@ export default {
     }
   },
   async created() {
-    const res = await axios.get('http://127.0.0.1:8000/post/user/' + this.$route.params.id);
-    this.posts = res.data;
+    const res = await axios.get('/posts/user/' + this.$route.params.id);
+    this.posts = res.data.posts;
   }
 }
 </script>

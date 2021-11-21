@@ -22,6 +22,9 @@
 import UploadImages from 'vue-upload-drop-images';
 import axios from 'axios';
 
+axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
 export default {
   name: "CreatePost",
   components: {
@@ -30,33 +33,20 @@ export default {
   data: function() {
     return {
       selectedFile: null,
-      encodedFile: null,
       title: ''
     }
   },
   methods: {
     async handleImages(event) {
       this.selectedFile = event.target.files[0];
-      console.log(this.selectedFile);
-      const reader = new FileReader();
-
-      let rawImg;
-      reader.onloadend = () => {
-        rawImg = reader.result;
-        console.log(rawImg);
-        this.encodedFile = rawImg;
-        console.log(this.encodedFile);
-      }
-      reader.readAsDataURL(this.selectedFile);
-
     },
-    onUpload() {
+    async onUpload() {
       let fd = new FormData();
       fd.append('title', this.title);
-      fd.append('image', this.encodedFile);
+      fd.append('image', this.selectedFile);
       fd.append('user_id', localStorage.getItem('user_id'));
 
-      axios.post('http://127.0.0.1:8000/post/create', fd, {
+      await axios.post('/post/create', fd, {
         headers: {
           'content-type': 'multipart/form-data'
         }
@@ -64,8 +54,7 @@ export default {
           .then(res => console.log(res))
           .catch(err => console.log(err));
 
-      this.$router.push({path: '/'});
-
+        this.$router.push('allposts');
     }
   }
 }

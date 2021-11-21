@@ -21,6 +21,11 @@
             <input class="form-control" type="password" name="password" id="password" v-model="password"/>
           </div>
 
+          <div>
+            <Error v-if="error" :error="error" />
+          </div>
+
+
           <button @click="login" class="btn btn-primary btn-lg mt-3">Se connecter</button>
         </form>
       </div>
@@ -29,13 +34,18 @@
 </template>
 
 <script>
+import Error from '../components/Error';
 
 export default {
   name: "Login",
+  components: {
+    Error
+  },
   data: function () {
     return {
       email: "",
       password: "",
+      error: this.$store.state.error
     };
   },
   methods: {
@@ -43,8 +53,8 @@ export default {
       this.$store.dispatch('login', {
             email: this.email,
             password: this.password
-          }
-      )
+          })
+      console.log(this.error);
     }
   }
 };

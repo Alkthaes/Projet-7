@@ -5,14 +5,14 @@
       <div class="card" style="max-width: 800px">
         <div v-if="this.editText == false" class="card-header d-flex justify-content-between">
           <h1 class="fs-2">
-            {{ post.titre }}
+            {{ post.title }}
             <button class="btn btn-primary" @click="switchToEditText">
               <i class="fas fa-edit"></i>
             </button>
           </h1>
           <p>posté par:
-            <img class="rounded-circle mx-1" :src="post.user.picture" alt="" width="30">
-            <a :href="'/post/user/' + post.user.id" class="text-decoration-none fw-bold">{{ post.user.firstname }}</a>
+            <img class="rounded-circle mx-1" :src="post.User.picture" alt="" width="30" height="30">
+            <a :href="'/post/user/' + post.User.id" class="text-decoration-none fw-bold">{{ post.User.firstname }}</a>
           </p>
         </div>
 
@@ -21,8 +21,8 @@
           <button class="btn btn-primary" @click="editTitle">Enregistrer</button>
 
           <p>posté par:
-            <img class="rounded-circle mx-1" :src="post.user.picture" alt="" width="30">
-            <a :href="'/post/user/' + post.user.id" class="text-decoration-none fw-bold">{{ post.user.firstname }}</a>
+            <img class="rounded-circle mx-1" :src="post.User.picture" alt="" width="30">
+            <a :href="'/post/user/' + post.User.id" class="text-decoration-none fw-bold">{{ post.User.firstname }}</a>
           </p>
         </div>
 
@@ -51,6 +51,9 @@
 import axios from "axios";
 import UploadImages from 'vue-upload-drop-images';
 
+axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
 export default {
   name: "editPost",
   components: {
@@ -58,20 +61,19 @@ export default {
   },
   data() {
     return {
-      post: {},
+      post: null,
       editText: false,
       editImageMod: false,
       newTitle: '',
-      selectedFile: null,
-      encodedFile: null
+      selectedFile: null
     }
   },
   async created() {
 
-    const resPost = await axios.get(`http://127.0.0.1:8000/post/${this.$route.params.id}`);
-    console.log(resPost.data);
+    const resPost = await axios.get(`/post/${this.$route.params.id}`);
+    console.log(resPost.data.post);
 
-    this.post = resPost.data;
+    this.post = resPost.data.post;
   },
   methods: {
     switchToEditText() {
@@ -82,21 +84,11 @@ export default {
     },
     async handleImages(event) {
       this.selectedFile = event.target.files[0];
-      console.log(this.selectedFile);
-      const reader = new FileReader();
-
-      let rawImg;
-      reader.onloadend = () => {
-        rawImg = reader.result;
-        console.log(rawImg);
-        this.encodedFile = rawImg;
-        console.log(this.encodedFile);
-      }
-      reader.readAsDataURL(this.selectedFile);
     },
     editImage() {
-
-      axios.put('http://127.0.0.1:8000/post/edit/image/' + this.$route.params.id, {'image': this.encodedFile})
+      const fd = new FormData();
+      fd.append('image', this.selectedFile);
+      axios.put('/post/edit/image/' + this.$route.params.id, fd)
           .then(function(res) {
             console.log(res);
             location.reload();
@@ -104,7 +96,7 @@ export default {
           .catch(err => console.log(err));
     },
     editTitle() {
-      axios.put('http://127.0.0.1:8000/post/edit/title/' + this.$route.params.id, {"titre": this.newTitle})
+      axios.put('/post/edit/title/' + this.$route.params.id, {"title": this.newTitle})
           .then(function(res) {
             console.log(res);
             location.reload();

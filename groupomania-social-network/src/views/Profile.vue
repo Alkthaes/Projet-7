@@ -5,7 +5,7 @@
       <div class="col-sm-12 col-lg-3 order-1 order-sm-2">
         <div class="card d-flex-column align-items-center">
 
-          <img class="border rounded-circle mt-3" v-bind:src="userInfo.picture" style="max-width: 150px"
+          <img class="border rounded-circle mt-3" v-bind:src="userInfo.picture || defaultImage"  style="max-width: 150px; height: 150px"
                alt="photo de profile utilisateur">
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-outline-primary my-3" data-bs-toggle="modal" data-bs-target="#avatarModal">
@@ -21,7 +21,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <UploadImages :max="1" @change="handleImages" required/>
+                  <UploadImages @change="handleImage" :max="1" required/>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -173,6 +173,9 @@
 import UploadImages from 'vue-upload-drop-images';
 import axios from "axios";
 
+axios.defaults.baseURL = 'http://localhost:3000/api';
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
 export default {
   name: "Profile",
   components: {
@@ -180,9 +183,8 @@ export default {
   },
   data: function () {
     return {
-      userInfo: {},
+      userInfo: null,
       selectedFile: null,
-      encodedFile: null,
       editMode: false,
       id: localStorage.getItem('user_id'),
       firstname: '',
@@ -190,7 +192,9 @@ export default {
       email: '',
       password: '',
       secteur: '',
-      fonction: ''
+      fonction: '',
+      imageError: false,
+      defaultImage: require('../../../backend/images/default-avatar.jpg')
     }
   },
   computed: {
@@ -207,15 +211,15 @@ export default {
       } else {
         return this.userInfo.secteur;
       }
-    }
+    },
   },
   async created() {
     const userId = localStorage.getItem('user_id');
 
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/user/account/${userId}`);
+      const res = await axios.get(`/auth/user/${userId}`);
 
-      this.userInfo = res.data;
+      this.userInfo = res.data.user;
       console.log(this.userInfo);
 
     } catch (error) {
@@ -223,35 +227,28 @@ export default {
     }
   },
   methods: {
-    async handleImages(event) {
+    async handleImage(event) {
       this.selectedFile = event.target.files[0];
-      console.log(this.selectedFile);
-      const reader = new FileReader();
-
-      let rawImg;
-      reader.onloadend = () => {
-        rawImg = reader.result;
-        console.log(rawImg);
-        this.encodedFile = rawImg;
-        console.log(this.encodedFile);
-      }
-      reader.readAsDataURL(this.selectedFile);
+      console.log(this.selectedFile)
     },
     async uploadAvatar() {
-      await axios.put('http://127.0.0.1:8000/user/update/avatar', {
-        'user_id': this.userInfo.id,
-        'picture': this.encodedFile
+      const fd = new FormData();
+      fd.append('image', this.selectedFile);
+      fd.append('id', this.id);
+
+      await axios.put('auth/update/avatar', fd, {
+        headers: {'Content-type': 'multipart/form-data'}
       })
           .then(res => console.log(res))
           .catch(err => console.log(err));
 
-      this.$router.go();
+      location.reload();
     },
     switchToEdit() {
       this.editMode = true
     },
     async submitChanges() {
-      await axios.put('http://127.0.0.1:8000/user/update/infos', {
+      await axios.put('/auth/update/infos', {
         'id': this.id,
         'lastname': this.lastname,
         'firstname': this.firstname,
@@ -263,7 +260,7 @@ export default {
           .then(res => console.log(res))
           .catch(err => console.log(err));
 
-      this.$router.go();
+      location.reload();
     },
     deleteAccount() {
       this.$store.dispatch('deleteAccount', this.userInfo.id);

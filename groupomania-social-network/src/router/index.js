@@ -7,11 +7,17 @@ import CreatePost from '@/views/CreatePost'
 import Post from '@/views/Post'
 import UserPosts from "@/views/UserPosts";
 import EditPost from "@/views/EditPost";
+import AccountDeleted from "@/views/AccountDeleted";
 
 const routes = [
   {
     path: '/',
     name: 'Home',
+    component: Login
+  },
+  {
+    path: '/allposts',
+    name: 'allposts',
     component: Home
   },
   {
@@ -48,6 +54,11 @@ const routes = [
     path: '/post/user/:id',
     name: 'userposts',
     component: UserPosts
+  },
+  {
+    path: '/account/deleted',
+    name: 'accountdeleted',
+    component: AccountDeleted
   }
 ]
 
