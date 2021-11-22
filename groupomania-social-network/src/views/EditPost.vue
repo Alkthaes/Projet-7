@@ -69,6 +69,9 @@ export default {
     }
   },
   async created() {
+    if (this.$store.state.isLoggedIn == false) {
+      await this.$router.push({path: '/'})
+    }
 
     const resPost = await axios.get(`/post/${this.$route.params.id}`);
     console.log(resPost.data.post);

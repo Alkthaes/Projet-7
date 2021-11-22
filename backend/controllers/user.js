@@ -4,12 +4,12 @@ const {User, Post} = require('../models');
 
 exports.signup = (req, res) => {
 
-        User.findOne({where: {emaiil: req.body.email}})
-            .then(user => {
-                if (user) {
-                    return res.status(400).json({message: 'Adresse email déjà utilisée'})
-                }
-            })
+    User.findOne({where: {emaiil: req.body.email}})
+        .then(user => {
+            if (user) {
+                return res.status(400).json({message: 'Adresse email déjà utilisée'})
+            }
+        })
     bcrypt.hash(req.body.password, 10)
         .then(async hash => {
             const user = await User.create({
@@ -25,27 +25,29 @@ exports.signup = (req, res) => {
         .catch(error => res.status(500).json({error: error}));
 };
 
-exports.login = (req, res) => {
-    User.findOne({where: {email: req.body.email}})
-        .then(user => {
-            if (!user) {
-                return res.status(400).json({message: 'Utilisateur non trouvé'})
+exports.login = async (req, res) => {
+    const user = await User.findOne({where: {email: req.body.email}})
+
+    if (!user) {
+        return res.status(400).json({message: 'Utilisateur non trouvé'})
+    }
+
+    bcrypt.compare(req.body.password, user.password)
+        .then(valid => {
+            if (!valid) {
+                return res.status(400).json({message: 'Mot de passe incorrect'})
             }
-            bcrypt.compare(req.body.password, user.password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(400).json({message: 'Mot de passe incorrect'})
-                    }
-                    res.status(200).json({
-                        user,
-                        token: jwt.sign(
-                            {userId: user.id},
-                            'RANDOM_TOKEN_SECRET',
-                            {expiresIn: '24h'}
-                        )
-                    })
-                })
+            res.status(200).json({
+                user,
+                token: jwt.sign(
+                    {userId: user.id},
+                    'RANDOM_TOKEN_SECRET',
+                    {expiresIn: '24h'}
+                )
+            })
         })
+        .catch(error => res.status(500).json({error}));
+
 };
 
 exports.getAllUsers = async (req, res) => {

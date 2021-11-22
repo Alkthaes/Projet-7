@@ -4,13 +4,13 @@
       <form @submit.prevent action="">
         <div class="w-100">
           <label for="title" class="me-3">Entrez un titre : </label>
-          <input v-model="title" id="title" name="title" type="text" />
+          <input v-model="title" id="title" name="title" type="text"/>
         </div>
         <div class="mt-3">
           <p>Choisissez une image (formats : jpeg, png ou gif) :</p>
-          <UploadImages :max="1" @change="handleImages" style="max-width: 600px" class="my-3" required />
+          <UploadImages :max="1" @change="handleImages" style="max-width: 600px" class="my-3" required/>
           <div class="d-flex justify-content-end ms-5" style="max-width: 600px">
-          <button class="btn btn-primary btn-lg px-3" type="button" @click="onUpload">Valider</button>
+            <button class="btn btn-primary btn-lg px-3" type="button" @click="onUpload">Valider</button>
           </div>
         </div>
       </form>
@@ -30,10 +30,15 @@ export default {
   components: {
     UploadImages
   },
-  data: function() {
+  data: function () {
     return {
       selectedFile: null,
       title: ''
+    }
+  },
+  async created() {
+    if (this.$store.state.isLoggedIn == false) {
+      await this.$router.push({path: '/'})
     }
   },
   methods: {
@@ -54,7 +59,7 @@ export default {
           .then(res => console.log(res))
           .catch(err => console.log(err));
 
-        this.$router.push('allposts');
+      this.$router.push('allposts');
     }
   }
 }

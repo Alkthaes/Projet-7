@@ -18,6 +18,10 @@ export default {
     }
   },
   async created() {
+    if (this.$store.state.isLoggedIn == false) {
+      await this.$router.push({path: '/'})
+    }
+
     const res = await axios.get('/posts/user/' + this.$route.params.id);
     this.posts = res.data.posts;
   }

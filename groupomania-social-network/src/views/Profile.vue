@@ -214,6 +214,10 @@ export default {
     },
   },
   async created() {
+    if (this.$store.state.isLoggedIn == false) {
+      await this.$router.push({path: '/'})
+    }
+
     const userId = localStorage.getItem('user_id');
 
     try {
