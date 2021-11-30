@@ -2,6 +2,10 @@
 ```
 npm install
 ```
+## CREATING THE DATABASE
+```
+npx sequelize db:create
+```
 
 ## Run build
 ```
