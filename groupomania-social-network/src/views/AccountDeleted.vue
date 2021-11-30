@@ -12,7 +12,7 @@ export default {
   name: "AccountDeleted",
   created() {
     setTimeout( () => {
-      this.$router.push({path: '/'});
+      this.$store.dispatch('logout');
     }, 5000);
   }
 }

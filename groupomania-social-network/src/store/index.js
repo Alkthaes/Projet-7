@@ -67,13 +67,12 @@ const store = createStore({
                 .then(res => console.log(res))
                 .catch(err => console.log(err));
         },
-        deleteAccount({commit, dispatch}, user_id) {
+        deleteAccount({commit}, user_id) {
             console.log(commit);
             axios.delete('/auth/delete/' + user_id)
                 .then(function (res) {
                     console.log(res);
                     router.push({path: '/account/deleted'})
-                        .then(() => dispatch('logout'))
                 })
                 .catch(err => console.log(err));
         },

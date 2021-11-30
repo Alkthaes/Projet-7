@@ -11,11 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Post.belongsTo(models.User);
-      Post.hasMany(models.Comment, {
-        foreignKey: 'PostId',
-        onDelete: "cascade"
+      Post.belongsTo(models.User, {
+        foreignKey: 'UserId',
+        onDelete: 'CASCADE',
+        hooks: true
       });
+      Post.hasMany(models.Comment);
     }
   };
   Post.init({
