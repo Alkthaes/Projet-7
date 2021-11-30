@@ -22,7 +22,7 @@
           </div>
 
           <div>
-            <Error v-if="error" :error="error" />
+            <Error v-if="hasError == true" :error="error" />
           </div>
 
 
@@ -45,16 +45,20 @@ export default {
     return {
       email: "",
       password: "",
-      error: this.$store.state.error
+      error: null,
+      hasError: false
     };
   },
   methods: {
-    login: function () {
-      this.$store.dispatch('login', {
-            email: this.email,
-            password: this.password
-          })
-      console.log(this.error);
+    login: async function () {
+
+        await this.$store.dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+
+        this.error = this.$store.state.error;
+        this.hasError = true;
     }
   }
 };

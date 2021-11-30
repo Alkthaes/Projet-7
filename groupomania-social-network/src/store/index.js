@@ -18,13 +18,10 @@ const store = createStore({
             state.isLoggedIn = false
         },
         errorFound(state, payload) {
-            return state.error = payload
+            state.error = payload
         }
     },
     actions: {
-        setError(context, errorMsg) {
-            context.commit('errorFound', errorMsg);
-        },
         createAccount: ({commit}, userInfos) => {
             console.log(commit);
 
@@ -43,15 +40,15 @@ const store = createStore({
                         }
                         localStorage.setItem('token', res.data.token);
                         localStorage.setItem('user_id', res.data.user.id);
-                        commit('loggedIn')
+                        commit('loggedIn');
                         router.push({path: '/allposts'});
                     })
                     .catch(err => {
-                        console.log(err)
+                        console.log(err.response.data.message)
+                        commit('errorFound', err.response.data.message);
                     });
             } catch(error) {
                 console.log(error);
-                commit('errorFound', error)
             }
         },
         logout: function ({commit}) {
