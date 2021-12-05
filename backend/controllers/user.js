@@ -1,6 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {User, Post} = require('../models');
+// variables used to cipher and decipher the email adress
+const crypto = require('crypto');
+const algorythm = 'aes256';
+//the key to cipher !use an env variable in production!
+const cryptoKey = 'l5JmP+G0/1zB%;r8B8?2?2pcqGcL^3'
 
 exports.signup = (req, res) => {
 
@@ -12,10 +17,14 @@ exports.signup = (req, res) => {
         })
     bcrypt.hash(req.body.password, 10)
         .then(async hash => {
+            //email encryption
+            const cipher = crypto.createCipher(algorythm, cryptoKey);
+            let crypted = cipher.update(req.body.email, 'utf8', 'hex');
+            crypted += cipher.final('hex');
             const user = await User.create({
                 lastname: req.body.lastname,
                 firstname: req.body.firstname,
-                email: req.body.email,
+                email: crypted,
                 picture: `${req.protocol}://${req.get('host')}/images/default-avatar.jpg`,
                 password: hash,
                 roles: 'ROLE_USER'
@@ -26,7 +35,12 @@ exports.signup = (req, res) => {
 };
 
 exports.login = async (req, res) => {
-    const user = await User.findOne({where: {email: req.body.email}})
+    //email encryption
+    const cipher = crypto.createCipher(algorythm, cryptoKey);
+    let crypted = cipher.update(req.body.email, 'utf8', 'hex');
+    crypted += cipher.final('hex');
+    const email = crypted;
+    const user = await User.findOne({where: {email: email}})
 
     if (!user) {
         return res.status(400).json({message: 'Utilisateur non trouvé'})
@@ -57,6 +71,11 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getOneUser = async (req, res) => {
     const user = await User.findByPk(req.params.id);
+    //email decryption
+    const decipher = crypto.createDecipher(algorythm, cryptoKey);
+    let dec = decipher.update(user.email, 'hex', 'utf8');
+    dec += decipher.final('utf8');
+    user.email = dec;
     return res.status(200).json({user})
 }
 
@@ -72,7 +91,11 @@ exports.updateUserInfo = (req, res) => {
                 await user.save();
             }
             if (req.body.email != '') {
-                user.email = req.body.email;
+                //email encryption
+                const cipher = crypto.createCipher(algorythm, cryptoKey);
+                let crypted = cipher.update(req.body.email, 'utf8', 'hex');
+                crypted += cipher.final('hex');
+                user.email = crypted;
                 await user.save();
             }
             if (req.body.password != '') {

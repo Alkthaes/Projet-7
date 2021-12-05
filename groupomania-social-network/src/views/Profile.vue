@@ -106,7 +106,7 @@
                   <label for="lastname" class="col-form-label">Nom</label>
                 </div>
                 <div class="col">
-                  <input v-model="lastname" type="text" id="lastname" name="lastname" class="form-control">
+                  <input v-model="lastname" type="text" id="lastname" name="lastname" class="form-control" :placeholder="userInfo.lastname">
                 </div>
               </div>
 
@@ -115,7 +115,7 @@
                   <label for="firstname" class="col-form-label">Prénom</label>
                 </div>
                 <div class="col">
-                  <input v-model="firstname" type="text" id="firstname" name="firstname" class="form-control">
+                  <input v-model="firstname" type="text" id="firstname" name="firstname" class="form-control" :placeholder="userInfo.firstname">
                 </div>
               </div>
 
@@ -124,7 +124,7 @@
                   <label for="email" class="col-form-label">Changer l'adresse email</label>
                 </div>
                 <div class="col">
-                  <input v-model="email" type="email" id="email" name="email" class="form-control">
+                  <input v-model="email" type="email" id="email" name="email" class="form-control" :placeholder="userInfo.email">
                 </div>
               </div>
 
@@ -142,7 +142,7 @@
                   <label for="secteur" class="col-form-label">Secteur</label>
                 </div>
                 <div class="col">
-                  <input v-model="secteur" type="text" id="secteur" name="secteur" class="form-control">
+                  <input v-model="secteur" type="text" id="secteur" name="secteur" class="form-control" :placeholder="secteurIsNull">
                 </div>
               </div>
 
@@ -151,7 +151,7 @@
                   <label for="fonction" class="col-form-label">Fonction</label>
                 </div>
                 <div class="col">
-                  <input v-model="fonction" type="text" id="fonction" name="fonction" class="form-control">
+                  <input v-model="fonction" type="text" id="fonction" name="fonction" class="form-control" :placeholder="fonctionIsNull">
                 </div>
               </div>
 

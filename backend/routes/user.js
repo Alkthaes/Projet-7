@@ -7,10 +7,10 @@ const multer = require('../middleware/multer-config');
 
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.get('/users', userCtrl.getAllUsers);
-router.get('/user/:id', userCtrl.getOneUser);
-router.put('/update/infos', userCtrl.updateUserInfo);
-router.put('/update/avatar', multer, userCtrl.updateAvatar);
-router.delete('/delete/:id', userCtrl.deleteAccount);
+router.get('/users', auth, userCtrl.getAllUsers);
+router.get('/user/:id', auth, userCtrl.getOneUser);
+router.put('/update/infos', auth, userCtrl.updateUserInfo);
+router.put('/update/avatar', auth, multer, userCtrl.updateAvatar);
+router.delete('/delete/:id', auth, userCtrl.deleteAccount);
 
 module.exports = router;

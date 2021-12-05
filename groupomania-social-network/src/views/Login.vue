@@ -22,7 +22,7 @@
           </div>
 
           <div>
-            <Error v-if="hasError == true" :error="error" />
+            <Error v-if="hasError == true" :error="this.$store.state.error" />
           </div>
 
 
@@ -45,7 +45,6 @@ export default {
     return {
       email: "",
       password: "",
-      error: null,
       hasError: false
     };
   },
@@ -57,7 +56,6 @@ export default {
           password: this.password
         })
 
-        this.error = this.$store.state.error;
         this.hasError = true;
     }
   }
